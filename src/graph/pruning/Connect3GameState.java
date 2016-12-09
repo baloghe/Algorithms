@@ -21,7 +21,7 @@ public class Connect3GameState {
 	}
 	
 	public int[][] getTable(){
-		return table;
+		return table.clone();
 	}
 	
 	public void setCell(int inR, int inC, int inVal){

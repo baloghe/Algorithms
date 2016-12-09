@@ -20,12 +20,11 @@ public class GcjGameStateEvaluator {
 	 */
 	public int evaluate(GcjGameState inGS){
 		int ret = 0;
-		int[][] t = inGS.getTable();
 		int rn = inGS.getRowNum();
 		int cn = inGS.getColNum();
 		for(int r = 0; r < rn; r++){
 			for(int c = 0; c < cn; c++){
-				if(t[r][c] != 0) ret++;
+				if(inGS.getCellValue(r, c) != 0) ret++;
 			}
 		}
 		return ret;
@@ -38,12 +37,11 @@ public class GcjGameStateEvaluator {
 	 */
 	public boolean isEndState(GcjGameState inGS){
 		int hit = 0;
-		int[][] t = inGS.getTable();
 		int rn = inGS.getRowNum();
 		int cn = inGS.getColNum();
 		for(int r = 0; r < rn; r++){
 			for(int c = 0; c < cn; c++){
-				if(t[r][c] == 2) hit++;
+				if(inGS.getCellValue(r, c) == 1) hit++;
 			}
 		}
 		return (hit==inGS.getShipLen());
