@@ -36,39 +36,27 @@ public class LongestIncSubs {
 					heaps.add(i);
 					prevs[i] = heaps.get(heaps.size()-2);
 					lastheaptop = actNum;
-				} else if(actNum < firstheaptop) {
+				} else if(actNum <= firstheaptop) {
 					//then the actual number should be inserted into the first position
 					heaps.set(0, i);
 					prevs[i] = -1;
 					firstheaptop = actNum;
 				} else {
 					//find the first heap (with binary search) having top element bigger than actNum
-					int lo = 0;
-					int hi = heaps.size()-1;
-					int mid = (lo+hi) / 2;
-					while( lo < mid ){
-						int tmptop = array[heaps.get(mid)];
-						if( actNum > tmptop ){
-							lo = mid + 1;
-						} else if( actNum < tmptop ){
-							hi = mid - 1;
-						} else {
-							hi = mid;
-							break;
-						}
-						mid = (lo+hi) / 2;
-					}//wend
-					//System.out.println("  binker: actNum=" + actNum + ", lo=" + lo + ", mid=" + mid + ", hi=" + hi + ", heap(lo,mid,hi)=" + heaps.get(lo).get(0) + ", " + heaps.get(mid).get(0) + ", " + heaps.get(hi).get(0));
-					//now heaps[hi] >= actNum > heaps[lo]  ==>  must insert to heaps[hi]
-					heaps.set(hi, i);
-					prevs[i] = heaps.get(hi - 1);
+					int firstGEIdx = getFirstGEIdx(heaps, actNum);
+					//System.out.println("      binSearch: actNum=" + actNum + ", heaps=" + heaps + ", firstGEIdx=" + firstGEIdx + ", firstheaptop=" + firstheaptop + ", lastheaptop=" + lastheaptop);
+					heaps.set(firstGEIdx, i);
+					prevs[i] = heaps.get(firstGEIdx - 1);
 					//lastheaptop changed only if this happened to be the last heap
-					if(hi == heaps.size()-1){
+					if(firstGEIdx == heaps.size()-1){
 						lastheaptop = actNum;
 					}
 				}//endif
 			}//endif
-			
+			if(heaps.size()==1){
+				firstheaptop = array[heaps.get(0)];
+				lastheaptop = firstheaptop;
+			}
 			//System.out.println("    " + i + ". prevs=" + intArrToString(prevs) );
 			//System.out.println("        heaps=" + heaps );
 		}//next actNum from array
@@ -99,5 +87,32 @@ public class LongestIncSubs {
 			}
 			return ret;
 		}
+	}
+	
+	private int getFirstGEIdx(ArrayList<Integer> inList, int inNum){
+		//trivia
+		if(inNum <= array[inList.get(0)]) return 0;
+		if(inNum > array[inList.get(inList.size()-1)]) return -1;
+		
+		//binSearch
+		int lo = 0;
+		int hi = inList.size()-1;
+		int mid = (lo + hi) / 2;
+		while(lo <= hi){
+			int tmpnum = array[inList.get(mid)];
+			//System.out.println("GE in: lo=" + lo + ", mid=" + mid + ", hi=" + hi + ", tmpnum=" + tmpnum);
+			if( tmpnum > inNum ){
+				hi = mid - 1;
+			} else if(tmpnum < inNum){
+				lo = mid + 1;
+			} else {
+				lo=mid-1;
+				hi=mid-1;
+				break;
+			}
+			mid = (lo + hi) / 2;
+			//System.out.println("GE out: lo=" + lo + ", mid=" + mid + ", hi=" + hi);
+		}//wend
+		return hi + 1;
 	}
 }

@@ -108,8 +108,11 @@ public class TstLongestIncSubs {
 	@Test
 	public void tst_aut10(){
 		
-		int[] arr = new int[]{7, 19, 17, 17, 2, 14, 15, 16, 18, 10};
-		//int[] arr = genRandArray(10, 20);
+		//int[] arr = new int[]{7, 14, 10, 3, 18, 5, 12, 18, 13, 10};
+		//int[] arr = new int[]{7, 19, 17, 17, 2, 14, 15, 16, 18, 10};
+		//int[] arr = new int[]{18, 15, 5, 0, 7, 13, 3, 6, 19, 15};
+		//int[] arr = new int[]{1, 9, 8, 3, 10, 4, 1, 13, 6, 6};
+		int[] arr = genRandArray(10, 20);
 		System.out.println("tst_aut10: " + intArrToString(arr) );
 		
 		LongestIncSubs s = new LongestIncSubs(arr);
@@ -127,7 +130,49 @@ public class TstLongestIncSubs {
 		assertTrue( b );
 	}
 	
-	@Ignore
+	@Test
+	public void tst_aut100000(){
+		
+		int[] arr = genRandArray(100000, 200000);
+		System.out.println("tst_aut100000:");
+		
+		LongestIncSubs s = new LongestIncSubs(arr);
+		s.solve();
+		
+		int[] act = s.getLongestSequence();
+		//System.out.println("   ret: " + intArrToString(act) );
+		boolean b = true;
+		int lag = act[0];
+		for(int i=1; i<act.length; i++){
+			b = b && ( lag <= act[i] );
+			lag = act[i];
+		}
+		
+		assertTrue( b );
+	}
+	
+	@Test
+	public void tst_aut1000000(){
+		
+		int[] arr = genRandArray(1000000, 2000000);
+		System.out.println("tst_aut1000000:");
+		
+		LongestIncSubs s = new LongestIncSubs(arr);
+		s.solve();
+		
+		int[] act = s.getLongestSequence();
+		//System.out.println("   ret: " + intArrToString(act) );
+		boolean b = true;
+		int lag = act[0];
+		for(int i=1; i<act.length; i++){
+			b = b && ( lag <= act[i] );
+			lag = act[i];
+		}
+		
+		assertTrue( b );
+	}
+	
+	@Test
 	public void tst_aut100(){
 		
 		System.out.println("tst_aut100:");
@@ -148,8 +193,10 @@ public class TstLongestIncSubs {
 		assertTrue( b );
 	}
 	
-	@Ignore
+	@Test
 	public void tst_aut10000(){
+		
+		System.out.println("tst_aut10000:");
 		
 		int[] arr = genRandArray(10000, 20000);
 				
@@ -167,25 +214,7 @@ public class TstLongestIncSubs {
 		assertTrue( b );
 	}
 	
-	@Ignore
-	public void tst_aut1000000(){
-		
-		System.out.println("tst_aut1000000:");
-		
-		int[] arr = genRandArray(1000000, 2000000);
-		LongestIncSubs s = new LongestIncSubs(arr);
-		s.solve();
-		
-		int[] act = s.getLongestSequence();
-		boolean b = true;
-		int lag = act[0];
-		for(int i=1; i<act.length; i++){
-			b = b && ( lag <= act[i] );
-			lag = act[i];
-		}
-		
-		assertTrue( b );
-	}
+	
 	
 	private ArrayList<Integer> arrToLst(int[] inArr){
 		ArrayList<Integer> ret = new ArrayList<Integer>();
